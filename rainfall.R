@@ -20,3 +20,13 @@ dat <- data.frame(pos = runif(n, 0, 3e9),
                   stringsAsFactors = FALSE)
 
 dat <- dat[order(dat$pos),]
+
+#set the x axis equal to position data
+x <- dat$pos
+
+#set the y axis equal to the difference in position data
+n <- length(dat$pos)
+y <- c(NA, dat$pos[-1]-dat$pos[-n])
+
+#create the rainfall plot
+rainfall <- plot(x,y, xlab='genomic position', ylab='genomic distance'))
