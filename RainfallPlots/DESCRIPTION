@@ -1,0 +1,9 @@
+Package: RainfallPlots
+Version: 0.1
+Date: 2015-04-23
+Title: RainfallPlots
+Author: Randall Johnson <johnsonra@mail.nih.gov> and Emily Mulhern <emily.mulhern@nih.gov>
+Maintainer: Randy Johnson <johnsonra@mail.nih.gov>
+Depends: R (>= 3.0)
+Description: Rainfall plots used to visualize patterns of somatic cell mutations.
+License: GPL (>= 2.0)
