@@ -26,7 +26,7 @@ names(cols) <- c('C>A', 'C>G', 'C>T', 'T>A', 'T>C', 'T>G')
 plot(position,distance, xlab='genomic position', ylab='genomic distance', col=cols[dat$mutation], pch=16)
 
 #add a legend
-legend(1.25e+09, 2500000, title="Mutations", cex=0.75, pch=16, col=c("blue", "black", "orange", "purple", "yellow", "green"), legend= c('C>A', 'C>G', 'C>T', 'T>A', 'T>C', 'T>G'), ncol=6)
+legend("topright", title="Mutations", cex=0.75, pch=16, col=c("blue", "black", "orange", "purple", "yellow", "green"), legend= c('C>A', 'C>G', 'C>T', 'T>A', 'T>C', 'T>G'), ncol=6)
 
 #check that position & distance lengths are ok
 if(length(dat$pos) != length(dat$distance))

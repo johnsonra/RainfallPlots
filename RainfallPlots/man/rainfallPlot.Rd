@@ -11,7 +11,6 @@
   \item{mutations}{C>A, C>G, C>T, T>A, T>C, T>G}
 }
 
-\references{}
 \author{Emily Mulhern}
 
 \examples{
