@@ -15,13 +15,13 @@ rainfallPlot <- function(chrom, pos, mutation, cols = c('blue', 'black', 'orange
 
 
     # reorder by chromosome/position
-ordered <- order(chrom, pos)
+    ordered <- order(chrom, pos)
 
-chrom <- chrom[ordered]
+    chrom <- chrom[ordered]
 
-pos <- pos[ordered]
+    pos <- pos[ordered]
 
-mutation <- mutation[ordered]
+    mutation <- mutation[ordered]
 
     # stack chromosomes so they don't all get plotted over the top of eachother
     # find ends of chromosomes
@@ -33,22 +33,22 @@ mutation <- mutation[ordered]
     # rearrange order by chromosome
     pos <- pos + to.add[chrom]
 
-#set the y axis equal to the difference in position data
-n <- length(pos)
-distance <- c(NA, pos[-1]-pos[-n])
+    #set the y axis equal to the difference in position data
+    n <- length(pos)
+    distance <- c(NA, pos[-1]-pos[-n])
 
-distance <- ifelse(distance < 0, NA, distance)
+    distance <- ifelse(distance < 0, NA, distance)
 
     # set width to remove extra 7% added to edges of x-axis
     r <- range(pos, na.rm = TRUE)
     w <- diff(r) / 1.07
     xlim <- c(mean(r) - w/2, mean(r) + w/2)
 
-#assign colors to the mutations
-cols <- c('blue', 'black', 'orange', 'purple', 'yellow', 'green')
-names(cols) <- c('C>A', 'C>G', 'C>T', 'T>A', 'T>C', 'T>G')
+    #assign colors to the mutations
+    cols <- c('blue', 'black', 'orange', 'purple', 'yellow', 'green')
+    names(cols) <- c('C>A', 'C>G', 'C>T', 'T>A', 'T>C', 'T>G')
 
-#create rainfall plot
+    #create rainfall plot
     plot(pos,log10(distance), xlab='', ylab='Genomic distance', col=cols[mutation],
          pch=16, cex = 0.4, yaxt = 'n', xaxt = 'n', xlim = xlim, cex.lab = 1.5)
 
@@ -67,7 +67,7 @@ names(cols) <- c('C>A', 'C>G', 'C>T', 'T>A', 'T>C', 'T>G')
     text(labels.at, 4, labels = expression(10^4), las = 1, xpd = TRUE, adj = 1)
     text(labels.at, 6, labels = expression(10^6), las = 1, xpd = TRUE, adj = 1)
 
-#add a legend
+    #add a legend
     legend.at <- figure.limits[3] - diff(figure.limits[3:4]) / 15
     legend(mean(r), legend.at, pch=16, col=cols, legend= names(cols), ncol=6, xpd = TRUE, xjust = 0.5, bty = 'n')
 }
