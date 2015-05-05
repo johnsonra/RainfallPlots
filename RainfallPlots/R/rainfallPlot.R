@@ -24,14 +24,15 @@ rainfallPlot <- function(chrom, pos, mutation, cols = c('blue', 'black', 'orange
     mutation <- mutation[ordered]
 
     # stack chromosomes so they don't all get plotted over the top of eachother
-    # find ends and midpoints of chromosomes
+    # find ends of chromosomes
     ends <- which(chrom[-1] != chrom[-length(chrom)])
-
-    mids <- sapply(na.omit(unique(chrom)), function(i) mean(range(pos[chrom == i], na.rm = TRUE)))
-    names(mids) <- na.omit(unique(chrom))
 
     # find how much to add to the subsequent chromosome to string them along the x-axis, rather than on top of each other
     to.add <- cumsum(c(0, pos[ends]))
+
+    # find midpoints of chromosomes
+    mids <- sapply(na.omit(unique(chrom)), function(i) mean(range(pos[chrom == i], na.rm = TRUE))) + to.add
+    names(mids) <- na.omit(unique(chrom))
 
     # rearrange order by chromosome
     pos <- pos + to.add[chrom]
@@ -65,7 +66,7 @@ rainfallPlot <- function(chrom, pos, mutation, cols = c('blue', 'black', 'orange
     axis(1, at = mids, labels = names(mids))
 
     # label y-axis
-    labels.at <- figure.limits[1] - diff(figure.limits[1:2]) * margin.inches[2] / figure.inches[2] / 15
+    labels.at <- figure.limits[1] - diff(figure.limits[1:2]) * margin.inches[2] / figure.inches[1] / 5
 
     axis(2, at = c(0,2,4,6), labels = FALSE)
 
@@ -75,7 +76,7 @@ rainfallPlot <- function(chrom, pos, mutation, cols = c('blue', 'black', 'orange
     text(labels.at, 6, labels = expression(10^6), las = 1, xpd = TRUE, adj = 1)
 
     #add a legend
-    legend.at <- figure.limits[3] - diff(figure.limits[3:4]) * margin.inches[1] / figure.inches[1] * 2
+    legend.at <- figure.limits[3] - diff(figure.limits[3:4]) * margin.inches[1] / figure.inches[2] / 1.3
 
     legend(mean(r), legend.at, pch=16, col=cols, legend= names(cols), ncol=6, xpd = TRUE, xjust = 0.5, bty = 'n')
 
