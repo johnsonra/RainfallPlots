@@ -11,8 +11,11 @@ rainfallPlot <- function(chrom, pos, mutation, cols = c('blue', 'black', 'orange
 
     #check that position & distance lengths are ok
     if(length(pos) != length(chrom) | length(pos) != length(mutation))
-	warning("chrom, pos and mutation must have the same number of elements")
+	stop("chrom, pos and mutation must have the same number of elements")
 
+    # check that cols and mutations are the same length
+    if(length(cols) != length(mutations))
+        stop("cols and mutations must have the same number of elements")
 
     # reorder by chromosome/position
     ordered <- order(chrom, pos)
@@ -27,7 +30,7 @@ rainfallPlot <- function(chrom, pos, mutation, cols = c('blue', 'black', 'orange
     # find ends of chromosomes
     ends <- which(chrom[-1] != chrom[-length(chrom)])
 
-    # find how much to add to the subsequent chromosome to string them along the x-axis, rather than on top of each other
+    # find how much to add to the subsequent chromosome to string them along the x-axis
     to.add <- cumsum(c(0, pos[ends]))
 
     # find midpoints of chromosomes
@@ -49,24 +52,29 @@ rainfallPlot <- function(chrom, pos, mutation, cols = c('blue', 'black', 'orange
     xlim <- c(mean(r) - w/2, mean(r) + w/2)
 
     #assign colors to the mutations
-    cols <- c('blue', 'black', 'orange', 'purple', 'yellow', 'green')
-    names(cols) <- c('C>A', 'C>G', 'C>T', 'T>A', 'T>C', 'T>G')
+    names(cols) <- mutations
 
     #create rainfall plot
     plot(pos,log10(distance), xlab='', ylab='Genomic distance', col=cols[mutation],
          pch=16, cex = 0.4, yaxt = 'n', xaxt = 'n', xlim = xlim, cex.lab = 1.5)
 
     figure.limits <- par()$usr
-    margin.inches <- par()$mai
-    figure.inches <- par()$fin
+    margin.height <- sum(par()$mai[c(1,3)])
+    margin.width <- sum(par()$mai[c(2,4)])
+    figure.width <- par()$fin[1]
+    figure.height <- par()$fin[2]
 
     # label x-axis
-    mtext('Genomic position', side = 1, line = 2.5, cex = 1.5)
+    mtext('Genomic position', side = 1, line = 1.8, cex = 1.5)
 
-    axis(1, at = mids, labels = names(mids))
+    for(i in 1:length(mids))
+    {
+        line <- ifelse(i/2 == round(i/2), -0.3, -1)
+        axis(1, at = mids[i], labels = names(mids)[i], tick = FALSE, line = line)
+    }
 
     # label y-axis
-    labels.at <- figure.limits[1] - diff(figure.limits[1:2]) * margin.inches[2] / figure.inches[1] / 5
+    labels.at <- figure.limits[1] - diff(figure.limits[1:2]) * margin.width / (margin.width + figure.width) / 7
 
     axis(2, at = c(0,2,4,6), labels = FALSE)
 
@@ -76,7 +84,7 @@ rainfallPlot <- function(chrom, pos, mutation, cols = c('blue', 'black', 'orange
     text(labels.at, 6, labels = expression(10^6), las = 1, xpd = TRUE, adj = 1)
 
     #add a legend
-    legend.at <- figure.limits[3] - diff(figure.limits[3:4]) * margin.inches[1] / figure.inches[2] / 1.3
+    legend.at <- figure.limits[3] - diff(figure.limits[3:4]) * margin.height / (margin.height + figure.height) / 2
 
     legend(mean(r), legend.at, pch=16, col=cols, legend= names(cols), ncol=6, xpd = TRUE, xjust = 0.5, bty = 'n')
 
